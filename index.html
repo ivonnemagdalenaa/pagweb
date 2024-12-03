@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prinlab3D - Impresiones 3D</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, rgba(255,182,193,0.2) 0%, rgba(173,216,230,0.2) 100%);
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .social-icon {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-500 mb-4">
+                Prinlab3D
+            </h1>
+            <p class="text-xl text-gray-600 mb-6">
+                Impresiones 3D de Alta Calidad
+            </p>
+            <div class="flex justify-center space-x-6">
+                <!-- WhatsApp Icon -->
+                <a href="https://wa.me/952130896" target="_blank" class="social-icon text-green-500 hover:text-green-600">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/WhatsApp.svg" alt="WhatsApp" width="40" height="40">
+                </a>
+                <!-- Instagram Icon -->
+                <a href="https://instagram.com/prinlab3d" target="_blank" class="social-icon text-pink-500 hover:text-pink-600">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="32" height="32">
+                </a>
+                <!-- YouTube Icon -->
+                <a href="https://youtube.com/@prinlab3d" target="_blank" class="social-icon text-red-500 hover:text-red-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.697 3.435 0 5.418 0 12s.697 8.565 4.385 8.816c3.599.246 11.626.245 15.23 0C23.303 20.565 24 18.582 24 12s-.697-8.565-4.385-8.816zM9 16V8l7.5 4L9 16z"/>
+                    </svg>
+                </a>
+            </div>
+        </header>
+
+        <main>
+            <div id="productos" class="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
+                <!-- Los productos se generarán dinámicamente aquí -->
+            </div>
+            <div id="paginador" class="flex justify-center space-x-2 mt-12">
+                <!-- Botones de paginación se generarán dinámicamente -->
+            </div>
+        </main>
+
+        <!-- Modal de Transferencia -->
+        <div id="transferenciaModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg max-w-md w-full text-center">
+                <h2 class="text-2xl font-bold mb-4 text-pink-600">Datos de Transferencia</h2>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <p><strong>Nombre:</strong> Ivonne Daza</p>
+                    <p><strong>RUT:</strong> 17.578.631-7</p>
+                    <p><strong>Banco:</strong> Estado</p>
+                    <p><strong>Cuenta RUT:</strong> 17578631</p>
+                    <p class="mt-4 text-lg font-bold text-pink-600" id="montoTransferencia"></p>
+                </div>
+                <button onclick="cerrarModalTransferencia()" class="mt-6 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const productos = Array.from({ length: 30 }, (_, i) => {
+            const imagenes = [
+                'https://i.imgur.com/DyVyKrM.png',
+                'https://i.imgur.com/aNTJ3XM.png',
+                'https://i.imgur.com/rzSYqMc.jpeg',
+                'https://i.imgur.com/LPIgAH4.jpeg',
+                'https://i.imgur.com/Gkv87qE.jpeg',
+                'https://i.imgur.com/A9wNbKi.jpeg',
+                'https://i.imgur.com/UFs6mVt.jpeg',
+                'https://i.imgur.com/fPD5Zqr.png',
+                'https://i.imgur.com/F8p3eAM.jpeg',
+                'https://i.imgur.com/otXBa04.jpeg',
+                'https://i.imgur.com/7kdS8Ix.jpeg',
+                'https://i.imgur.com/iQ5yxrX.png',
+                'https://i.imgur.com/Oyw1HTl.png',
+                'https://i.imgur.com/NbRiVwU.png',
+                'https://i.imgur.com/Ti6h21K.png',
+                'https://i.imgur.com/tHO7cAQ.png',
+                'https://i.imgur.com/hz1FdST.png',
+                'https://i.imgur.com/gyrVhr3.png',
+                'https://i.imgur.com/MDqvue7.png',
+                'https://i.imgur.com/E3zKg5h.png',
+                'https://i.imgur.com/JvxHxZe.jpeg',
+                'https://i.imgur.com/Qpw4g2I.jpeg',
+                'https://i.imgur.com/jaIc1hK.jpeg',
+                'https://i.imgur.com/jk7tjKM.jpeg',
+                'https://i.imgur.com/ELJx3Bt.jpeg',
+                'https://i.imgur.com/6103yMa.jpeg',
+                'https://i.imgur.com/vlVzxkx.jpeg',
+                'https://i.imgur.com/2HWZxyh.jpeg',
+                'https://i.imgur.com/oiAIXGu.jpeg',
+                'https://i.imgur.com/LXms9nL.jpeg'
+            ];
+
+            return {
+                id: i + 1,
+                nombre: `Impresión 3D ${i + 1}`,
+                descripcion: `Producto de impresión 3D de alta calidad - Modelo ${i + 1}`,
+                precio: Math.floor(Math.random() * 50000) + 10000,
+                imagen: imagenes[i]
+            };
+        });
+
+        const productosPorPagina = 9;
+        let paginaActual = 1;
+
+        function mostrarProductos(pagina) {
+            const contenedorProductos = document.getElementById('productos');
+            const inicio = (pagina - 1) * productosPorPagina;
+            const fin = inicio + productosPorPagina;
+            const productosActuales = productos.slice(inicio, fin);
+
+            contenedorProductos.innerHTML = productosActuales.map(producto => `
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">${producto.nombre}</h3>
+                        <p class="text-gray-600 mb-4 h-16 overflow-hidden">${producto.descripcion}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-pink-600">$${producto.precio.toLocaleString()}</span>
+                            <div class="space-x-2">
+                                <button onclick="mostrarModalTransferencia(${producto.precio})" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">
+                                    Transferencia
+                                </button>
+                                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:inline;">
+                                    <input type="hidden" name="cmd" value="_xclick">
+                                   
+                                    <input type="hidden" name="business" value="tu-email-paypal@example.com">
+                                    <input type="hidden" name="item_name" value="${producto.nombre}">
+                                    <input type="hidden" name="amount" value="${producto.precio}">
+                                    <input type="submit" value="PayPal" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            generarPaginador();
+        }
+
+        function generarPaginador() {
+            const totalPaginas = Math.ceil(productos.length / productosPorPagina);
+            const paginador = document.getElementById('paginador');
+
+            paginador.innerHTML = Array.from({ length: totalPaginas }, (_, i) => `
+                <button 
+                    onclick="cambiarPagina(${i + 1})" 
+                    class="px-4 py-2 ${paginaActual === i + 1 ? 'bg-pink-500 text-white' : 'bg-gray-200'} rounded-full hover:bg-pink-600 transition"
+                >
+                    ${i + 1}
+                </button>
+            `).join('');
+        }
+
+        function cambiarPagina(pagina) {
+            paginaActual = pagina;
+            mostrarProductos(paginaActual);
+        }
+
+        function mostrarModalTransferencia(precio) {
+            document.getElementById('montoTransferencia').textContent = `Monto: $${precio.toLocaleString()}`;
+            document.getElementById('transferenciaModal').classList.remove('hidden');
+        }
+
+        function cerrarModalTransferencia() {
+            document.getElementById('transferenciaModal').classList.add('hidden');
+        }
+
+        // Inicializar la primera página
+        mostrarProductos(paginaActual);
+    </script>
+</body>
+</html>
